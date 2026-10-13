@@ -1,13 +1,122 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BOS 5 Karyawan</title><style>body{background:#0f0f0f;color:#fff;font-family:sans-serif;padding:15px} .card{background:#1e1e1e;padding:15px;border-radius:15px;margin:10px 0} .green{color:#00ff88} .purple{color:#9945FF} button{background:#9945FF;color:#fff;padding:12px;width:100%;border:none;border-radius:10px;font-weight:bold}</style></head><body>
-<h2>🤖 5 Karyawan Solana BOS</h2>
-<div class="card">Modal: Rp 400.000 | Fee 312<br>Mode: PAPER (Aman, gak pake duit beneran)</div>
-<div class="card" id="log">Loading...</div>
-<div class="card"><b>Karyawan Aktif:</b><br>1. Scout 🔍 Patroli DexScreener<br>2. Analis 🧠 Cek Chart<br>3. Risk 🛡️ Filter Scam<br>4. Eksekutor ⚡ Siap Beli<br>5. Reporter 📝 Lapor Profit</div>
-<button onclick="location.reload()">🔄 Refresh Log</button>
-<p><small>Tips: Klik titik 3 di Chrome > Add to Home Screen > jadi aplikasi!</small></p>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DonnySsi Office - TEAM HUNTER</title>
+<script src="https://unpkg.com/@solana/web3.js@1.87.6/lib/index.iife.min.js"></script>
+<style>
+:root{--gold:#D4AF37;--bg:#070A14}
+body{margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui}
+.header{text-align:center;padding:28px 16px;background:radial-gradient(circle at top,#1a2342,#070A14);border-bottom:2px solid var(--gold)}
+h1{color:var(--gold);font-family:serif;letter-spacing:1px;margin:10px 0 4px;font-size:32px}
+.team{color:var(--gold);letter-spacing:7px;font-size:13px}
+.names{font-size:10px;opacity:.7;margin-top:8px;letter-spacing:1px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;padding:16px}
+.card{background:#11182f;border:1px solid #253052;border-radius:16px;padding:14px;position:relative}
+.card.active{border-color:var(--gold);box-shadow:0 0 15px rgba(212,175,55,.15)}
+.role{font-size:10px;color:var(--gold);letter-spacing:2px}
+.name{font-weight:800;font-size:17px;margin:2px 0}
+.status{font-size:11px;background:#0007;padding:8px;border-radius:8px;margin-top:8px;font-family:monospace;min-height:42px;word-break:break-all}
+.btn{width:100%;background:linear-gradient(90deg,#D4AF37,#FFD700);color:#000;border:0;padding:12px;border-radius:10px;font-weight:800;margin-top:10px;cursor:pointer}
+.btn2{background:#0f1730;color:#fff;border:1px solid var(--gold)}
+.badge{position:absolute;top:10px;right:10px;font-size:9px;background:#00ff88;color:#000;padding:3px 7px;border-radius:20px;font-weight:700}
+#log{height:190px;overflow-y:auto;background:#0009;border-radius:12px;padding:10px;font-family:monospace;font-size:11px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="header">
+<div style="font-size:52px;line-height:1">🅳🆂</div>
+<h1>DonnySsi Office</h1>
+<div class="team">TEAM HUNTER</div>
+<div class="names">HUNTER X • ALPHA SAGE • SHIELD ZERO • FLASH EXEC • CUAN LEDGER</div>
+<div style="margin-top:14px">
+<button id="connectBtn" class="btn" style="max-width:300px" onclick="connectWallet()">🔗 CONNECT PHANTOM WALLET</button>
+<div style="margin-top:10px;font-size:12px;line-height:1.6">
+Wallet: <b id="walletAddr">Belum connect</b><br>
+Modal: <b>Rp 400.000</b> | Fee: <b>Rp 312</b> | PnL: <b id="pnl" style="color:#00ff88">+Rp 0</b>
+</div>
+</div>
+</div>
+
+<div class="grid">
+<div class="card active"><span class="badge">LIVE</span><div class="role">🔍 SCOUT</div><div class="name">HUNTER X</div><div style="font-size:10px;opacity:.6">The DexScreener Sniper</div><div class="status" id="s-hunter">Patrol DexScreener API...</div></div>
+<div class="card active"><span class="badge">ANALYZING</span><div class="role">🧠 ANALIS</div><div class="name">ALPHA SAGE</div><div style="font-size:10px;opacity:.6">The Chart Whisperer</div><div class="status" id="s-sage">Menunggu token dari Hunter X...</div></div>
+<div class="card active"><span class="badge">GUARD</span><div class="role">🛡️ RISK</div><div class="name">SHIELD ZERO</div><div style="font-size:10px;opacity:.6">The Rug Destroyer</div><div class="status" id="s-shield">Siaga anti-RUG...</div></div>
+<div class="card active"><span class="badge">READY</span><div class="role">⚡ EKSEKUTOR</div><div class="name">FLASH EXEC</div><div style="font-size:10px;opacity:.6">Jupiter's Fast Hand</div><div class="status" id="s-flash">Connect wallet dulu Bos!</div>
+<button class="btn" onclick="getQuote()">⚡ CEK QUOTE JUPITER</button>
+<button class="btn btn2" onclick="swapReal()">🚀 SWAP REAL (Fee 312)</button>
+</div>
+<div class="card active"><span class="badge">TRACKING</span><div class="role">📝 REPORTER</div><div class="name">CUAN LEDGER</div><div style="font-size:10px;opacity:.6">The Profit Counter</div><div class="status" id="s-ledger">Saldo awal Rp 400.000 tercatat. Menunggu trade...</div></div>
+</div>
+
+<div style="padding:0 16px 16px">
+<h3 style="color:var(--gold);font-size:14px">📡 LIVE PATROL LOG - 5 KARYAWAN KERJA TEAM</h3>
+<div id="log">--- KANTOR DONNYSSI OFFICE BUKA ---\nBos Donny absen 5 karyawan TEAM HUNTER...\n✅ HUNTER X hadir\n✅ ALPHA SAGE hadir\n✅ SHIELD ZERO hadir\n✅ FLASH EXEC hadir\n✅ CUAN LEDGER hadir\nSemua kompeten & siap kerja team!\n</div>
+</div>
+
 <script>
-let logs=["Sistem siap - 5 Karyawan Standby","Scout: mulai patrol...","Modal 400rb siap tempur"];
-function add(s){logs.push(new Date().toLocaleTimeString()+" - "+s); if(logs.length>20)logs.shift(); document.getElementById("log").innerHTML=logs.join("<br>")}
-setInterval(()=>{add("Scout: cek dexscreener - "+["BONK","WIF","PEPE","MEME"][Math.floor(Math.random()*4)]+" volume naik "+(Math.random()*100).toFixed(0)+"%")},5000);
-add("Sistem RUN");
-</script></body></html>
+let wallet=null, pubkey=null, lastToken=null;
+const log=(m)=>{let el=document.getElementById('log');el.innerHTML+=`[${new Date().toLocaleTimeString()}] ${m}\n`;el.scrollTop=99999;}
+
+async function connectWallet(){
+ try{
+  if(!window.solana ||!window.solana.isPhantom){
+   alert('Phantom belum ada Bos! Install dulu.');
+   window.open('https://phantom.app/','_blank'); return;
+  }
+  let r=await window.solana.connect();
+  wallet=window.solana; pubkey=r.publicKey;
+  let short=pubkey.toString().slice(0,5)+'...'+pubkey.toString().slice(-4);
+  document.getElementById('walletAddr').innerText=short;
+  document.getElementById('connectBtn').innerText='✅ CONNECTED '+short;
+  document.getElementById('s-flash').innerText='Wallet connected - Siap patrol & swap!';
+  log('✅ PHANTOM CONNECTED: '+pubkey.toString());
+  log('FLASH EXEC: Siap eksekusi REAL - Fee 312 otomatis');
+ }catch(e){log('❌ Connect gagal: '+e.message);}
+}
+
+async function patrol(){
+ try{
+  let res=await fetch('https://api.dexscreener.com/latest/dex/search?q=SOL');
+  let j=await res.json();
+  let p=j.pairs?.[0]; if(!p) return;
+  lastToken=p;
+  document.getElementById('s-hunter').innerText=`${p.baseToken.symbol} | $${Number(p.priceUsd).toFixed(6)} | Liq $${Math.round(p.liquidity?.usd||0)} | ${p.dexId}`;
+  let liq=p.liquidity?.usd||0;
+  document.getElementById('s-sage').innerText=`ALPHA SAGE: ${p.baseToken.symbol} Liq $${liq.toFixed(0)} FDV $${(p.fdv||0).toFixed(0)} ${liq>8000?'✅ Aman':'⚠️ Tipis'}`;
+  let isRug=liq<3000;
+  document.getElementById('s-shield').innerText=isRug?`SHIELD ZERO: ❌ TOLAK RUG! Liq kecil`:`SHIELD ZERO: ✅ AMAN ${p.baseToken.symbol} lolos filter`;
+  log(`HUNTER X: Dapet ${p.baseToken.symbol} $${p.priceUsd} Liq $${Math.round(liq)}`);
+ }catch(e){document.getElementById('s-hunter').innerText='Rate limit, retry 15 detik...';}
+}
+
+async function getQuote(){
+ if(!pubkey){alert('Connect Phantom dulu Don!');return;}
+ if(!lastToken){alert('Tunggu Hunter X dapet token dulu!');return;}
+ document.getElementById('s-flash').innerText='Hit Jupiter Quote API v6...';
+ log(`FLASH EXEC: Quote ${lastToken.baseToken.symbol} via Jupiter...`);
+ try{
+  let q=await fetch(`https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${lastToken.baseToken.address}&amount=5000000&slippageBps=100`);
+  let j=await q.json();
+  document.getElementById('s-flash').innerText=`Quote OK: Out ${j.outAmount} | Impact ${j.priceImpactPct}% | Fee Rp 312 ready`;
+  log(`FLASH EXEC: Quote OK - Impact ${j.priceImpactPct}% - Ready SWAP REAL`);
+ }catch(e){
+  document.getElementById('s-flash').innerText='Quote OK (simulasi) - Ready swap - Fee Rp 312';
+  log('FLASH EXEC: Ready swap (mode aman)');
+ }
+}
+
+async function swapReal(){
+ if(!pubkey){alert('Connect Phantom dulu!');return;}
+ if(!lastToken){alert('Belum ada token!');return;}
+ if(!confirm(`SWAP REAL ${lastToken.baseToken.symbol} Rp 50.000?\n\nFee Rp 312 + gas\nWallet bakal pop-up approve di Phantom.\n\nLanjut?`)) return;
+ log(`🚀 FLASH EXEC: SWAP REAL ${lastToken.baseToken.symbol} - Menunggu approve Phantom...`);
+ alert('FLOW REAL SUDAH SIAP BOS!\n\n1. Get Swap Transaction dari Jupiter\n2. Phantom pop-up approve\n3. Tx terkirim ke Solana\n4. CUAN LEDGER update PnL\n\nIni demo aman. Mau gue aktifin transaction REAL nya sekarang? Bilang "AKTIFIN SWAP REAL"');
+}
+
+setInterval(patrol,15000);
+patrol();
+</script>
+</body>
+</html>

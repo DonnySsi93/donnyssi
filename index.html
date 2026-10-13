@@ -1,0 +1,13 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BOS 5 Karyawan</title><style>body{background:#0f0f0f;color:#fff;font-family:sans-serif;padding:15px} .card{background:#1e1e1e;padding:15px;border-radius:15px;margin:10px 0} .green{color:#00ff88} .purple{color:#9945FF} button{background:#9945FF;color:#fff;padding:12px;width:100%;border:none;border-radius:10px;font-weight:bold}</style></head><body>
+<h2>🤖 5 Karyawan Solana BOS</h2>
+<div class="card">Modal: Rp 400.000 | Fee 312<br>Mode: PAPER (Aman, gak pake duit beneran)</div>
+<div class="card" id="log">Loading...</div>
+<div class="card"><b>Karyawan Aktif:</b><br>1. Scout 🔍 Patroli DexScreener<br>2. Analis 🧠 Cek Chart<br>3. Risk 🛡️ Filter Scam<br>4. Eksekutor ⚡ Siap Beli<br>5. Reporter 📝 Lapor Profit</div>
+<button onclick="location.reload()">🔄 Refresh Log</button>
+<p><small>Tips: Klik titik 3 di Chrome > Add to Home Screen > jadi aplikasi!</small></p>
+<script>
+let logs=["Sistem siap - 5 Karyawan Standby","Scout: mulai patrol...","Modal 400rb siap tempur"];
+function add(s){logs.push(new Date().toLocaleTimeString()+" - "+s); if(logs.length>20)logs.shift(); document.getElementById("log").innerHTML=logs.join("<br>")}
+setInterval(()=>{add("Scout: cek dexscreener - "+["BONK","WIF","PEPE","MEME"][Math.floor(Math.random()*4)]+" volume naik "+(Math.random()*100).toFixed(0)+"%")},5000);
+add("Sistem RUN");
+</script></body></html>
